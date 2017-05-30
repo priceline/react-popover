@@ -1,6 +1,8 @@
 import "./main.css"
 import F from "ramda"
-import React, { DOM as E, PropTypes as T } from "react"
+import React, { DOM as E } from "react"
+import createReactClass from "create-react-class"
+import { PropTypes as T } from "prop-types"
 import ReactDOM from "react-dom"
 import PopoverClass from "../../lib"
 
@@ -10,7 +12,7 @@ const Popover = React.createFactory(PopoverClass)
 
 
 
-const Row = React.createFactory(React.createClass({
+const Row = React.createFactory(createReactClass({
   displayName: "row",
   propTypes: {
     children: T.number,
@@ -44,7 +46,7 @@ const Row = React.createFactory(React.createClass({
 
 
 
-const Main = React.createClass({
+const Main = createReactClass({
   render () {
     return (
       E.div({
