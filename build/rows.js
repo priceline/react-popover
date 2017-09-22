@@ -46,7 +46,7 @@
 
 	"use strict";
 	
-	__webpack_require__(218);
+	__webpack_require__(219);
 	
 	var _ramda = __webpack_require__(5);
 	
@@ -60,7 +60,7 @@
 	
 	var _createReactClass2 = _interopRequireDefault(_createReactClass);
 	
-	var _propTypes = __webpack_require__(186);
+	var _propTypes = __webpack_require__(187);
 	
 	var _reactDom = __webpack_require__(37);
 	
@@ -30561,7 +30561,11 @@
 	
 	var _react = __webpack_require__(6);
 	
-	var _propTypes = __webpack_require__(186);
+	var _reactDomFactories = __webpack_require__(186);
+	
+	var _reactDomFactories2 = _interopRequireDefault(_reactDomFactories);
+	
+	var _propTypes = __webpack_require__(187);
 	
 	var _createReactClass = __webpack_require__(183);
 	
@@ -30569,35 +30573,35 @@
 	
 	var _reactDom = __webpack_require__(37);
 	
-	var _debug = __webpack_require__(191);
+	var _debug = __webpack_require__(192);
 	
 	var _debug2 = _interopRequireDefault(_debug);
 	
-	var _lodash = __webpack_require__(194);
+	var _lodash = __webpack_require__(195);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
-	var _cssVendor = __webpack_require__(197);
+	var _cssVendor = __webpack_require__(198);
 	
 	var cssVendor = _interopRequireWildcard(_cssVendor);
 	
-	var _onResize = __webpack_require__(203);
+	var _onResize = __webpack_require__(204);
 	
 	var _onResize2 = _interopRequireDefault(_onResize);
 	
-	var _layout = __webpack_require__(206);
+	var _layout = __webpack_require__(207);
 	
 	var _layout2 = _interopRequireDefault(_layout);
 	
-	var _reactLayerMixin = __webpack_require__(207);
+	var _reactLayerMixin = __webpack_require__(208);
 	
 	var _reactLayerMixin2 = _interopRequireDefault(_reactLayerMixin);
 	
-	var _platform = __webpack_require__(204);
+	var _platform = __webpack_require__(205);
 	
-	var _utils = __webpack_require__(205);
+	var _utils = __webpack_require__(206);
 	
-	var _tip = __webpack_require__(208);
+	var _tip = __webpack_require__(209);
 	
 	var _tip2 = _interopRequireDefault(_tip);
 	
@@ -30654,6 +30658,7 @@
 	  propTypes: {
 	    body: _propTypes.PropTypes.node.isRequired,
 	    children: _propTypes.PropTypes.element.isRequired,
+	    appendTarget: _propTypes.PropTypes.string,
 	    className: _propTypes.PropTypes.string,
 	    enterExitTransitionDurationMs: _propTypes.PropTypes.number,
 	    isOpen: _propTypes.PropTypes.bool,
@@ -30922,7 +30927,7 @@
 	      this.tipEl.style[jsprefix("Transition")] = cssprefix("transform") + " 150ms ease-in";
 	    }
 	    this.containerEl.style.transitionProperty = "top, left, opacity, transform";
-	    this.containerEl.style.transitionDuration = this.props.enterExitTransitionDurationMs + " ms";
+	    this.containerEl.style.transitionDuration = this.props.enterExitTransitionDurationMs + "ms";
 	    this.containerEl.style.transitionTimingFunction = "cubic-bezier(0.230, 1.000, 0.320, 1.000)";
 	    this.containerEl.style.opacity = "1";
 	    this.containerEl.style.transform = "translateY(0)";
@@ -31043,7 +31048,7 @@
 	
 	    var popoverBody = (0, _utils.arrayify)(this.props.body);
 	
-	    return _react.DOM.div(popoverProps, _react.DOM.div.apply(_react.DOM, [{ className: "Popover-body" }].concat(_toConsumableArray(popoverBody))), (0, _react.createElement)(_tip2.default, tipProps));
+	    return _reactDomFactories2.default.div(popoverProps, _reactDomFactories2.default.div.apply(_reactDomFactories2.default, [{ className: "Popover-body" }].concat(_toConsumableArray(popoverBody))), (0, _react.createElement)(_tip2.default, tipProps));
 	  },
 	  render: function render() {
 	    return this.props.children;
@@ -31056,6 +31061,209 @@
 
 /***/ },
 /* 186 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	/**
+	 * Copyright 2015-present, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 */
+	
+	(function(f) {
+	  if (true) {
+	    module.exports = f(__webpack_require__(6));
+	    /* global define */
+	  } else if (typeof define === 'function' && define.amd) {
+	    define(['react'], f);
+	  } else {
+	    var g;
+	    if (typeof window !== 'undefined') {
+	      g = window;
+	    } else if (typeof global !== 'undefined') {
+	      g = global;
+	    } else if (typeof self !== 'undefined') {
+	      g = self;
+	    } else {
+	      g = this;
+	    }
+	
+	    if (typeof g.React === 'undefined') {
+	      throw Error('React module should be required before ReactDOMFactories');
+	    }
+	
+	    g.ReactDOMFactories = f(g.React);
+	  }
+	})(function(React) {
+	  /**
+	   * Create a factory that creates HTML tag elements.
+	   */
+	  function createDOMFactory(type) {
+	    var factory = React.createElement.bind(null, type);
+	    // Expose the type on the factory and the prototype so that it can be
+	    // easily accessed on elements. E.g. `<Foo />.type === Foo`.
+	    // This should not be named `constructor` since this may not be the function
+	    // that created the element, and it may not even be a constructor.
+	    factory.type = type;
+	    return factory;
+	  };
+	
+	  /**
+	   * Creates a mapping from supported HTML tags to `ReactDOMComponent` classes.
+	   */
+	  var ReactDOMFactories = {
+	    a: createDOMFactory('a'),
+	    abbr: createDOMFactory('abbr'),
+	    address: createDOMFactory('address'),
+	    area: createDOMFactory('area'),
+	    article: createDOMFactory('article'),
+	    aside: createDOMFactory('aside'),
+	    audio: createDOMFactory('audio'),
+	    b: createDOMFactory('b'),
+	    base: createDOMFactory('base'),
+	    bdi: createDOMFactory('bdi'),
+	    bdo: createDOMFactory('bdo'),
+	    big: createDOMFactory('big'),
+	    blockquote: createDOMFactory('blockquote'),
+	    body: createDOMFactory('body'),
+	    br: createDOMFactory('br'),
+	    button: createDOMFactory('button'),
+	    canvas: createDOMFactory('canvas'),
+	    caption: createDOMFactory('caption'),
+	    cite: createDOMFactory('cite'),
+	    code: createDOMFactory('code'),
+	    col: createDOMFactory('col'),
+	    colgroup: createDOMFactory('colgroup'),
+	    data: createDOMFactory('data'),
+	    datalist: createDOMFactory('datalist'),
+	    dd: createDOMFactory('dd'),
+	    del: createDOMFactory('del'),
+	    details: createDOMFactory('details'),
+	    dfn: createDOMFactory('dfn'),
+	    dialog: createDOMFactory('dialog'),
+	    div: createDOMFactory('div'),
+	    dl: createDOMFactory('dl'),
+	    dt: createDOMFactory('dt'),
+	    em: createDOMFactory('em'),
+	    embed: createDOMFactory('embed'),
+	    fieldset: createDOMFactory('fieldset'),
+	    figcaption: createDOMFactory('figcaption'),
+	    figure: createDOMFactory('figure'),
+	    footer: createDOMFactory('footer'),
+	    form: createDOMFactory('form'),
+	    h1: createDOMFactory('h1'),
+	    h2: createDOMFactory('h2'),
+	    h3: createDOMFactory('h3'),
+	    h4: createDOMFactory('h4'),
+	    h5: createDOMFactory('h5'),
+	    h6: createDOMFactory('h6'),
+	    head: createDOMFactory('head'),
+	    header: createDOMFactory('header'),
+	    hgroup: createDOMFactory('hgroup'),
+	    hr: createDOMFactory('hr'),
+	    html: createDOMFactory('html'),
+	    i: createDOMFactory('i'),
+	    iframe: createDOMFactory('iframe'),
+	    img: createDOMFactory('img'),
+	    input: createDOMFactory('input'),
+	    ins: createDOMFactory('ins'),
+	    kbd: createDOMFactory('kbd'),
+	    keygen: createDOMFactory('keygen'),
+	    label: createDOMFactory('label'),
+	    legend: createDOMFactory('legend'),
+	    li: createDOMFactory('li'),
+	    link: createDOMFactory('link'),
+	    main: createDOMFactory('main'),
+	    map: createDOMFactory('map'),
+	    mark: createDOMFactory('mark'),
+	    menu: createDOMFactory('menu'),
+	    menuitem: createDOMFactory('menuitem'),
+	    meta: createDOMFactory('meta'),
+	    meter: createDOMFactory('meter'),
+	    nav: createDOMFactory('nav'),
+	    noscript: createDOMFactory('noscript'),
+	    object: createDOMFactory('object'),
+	    ol: createDOMFactory('ol'),
+	    optgroup: createDOMFactory('optgroup'),
+	    option: createDOMFactory('option'),
+	    output: createDOMFactory('output'),
+	    p: createDOMFactory('p'),
+	    param: createDOMFactory('param'),
+	    picture: createDOMFactory('picture'),
+	    pre: createDOMFactory('pre'),
+	    progress: createDOMFactory('progress'),
+	    q: createDOMFactory('q'),
+	    rp: createDOMFactory('rp'),
+	    rt: createDOMFactory('rt'),
+	    ruby: createDOMFactory('ruby'),
+	    s: createDOMFactory('s'),
+	    samp: createDOMFactory('samp'),
+	    script: createDOMFactory('script'),
+	    section: createDOMFactory('section'),
+	    select: createDOMFactory('select'),
+	    small: createDOMFactory('small'),
+	    source: createDOMFactory('source'),
+	    span: createDOMFactory('span'),
+	    strong: createDOMFactory('strong'),
+	    style: createDOMFactory('style'),
+	    sub: createDOMFactory('sub'),
+	    summary: createDOMFactory('summary'),
+	    sup: createDOMFactory('sup'),
+	    table: createDOMFactory('table'),
+	    tbody: createDOMFactory('tbody'),
+	    td: createDOMFactory('td'),
+	    textarea: createDOMFactory('textarea'),
+	    tfoot: createDOMFactory('tfoot'),
+	    th: createDOMFactory('th'),
+	    thead: createDOMFactory('thead'),
+	    time: createDOMFactory('time'),
+	    title: createDOMFactory('title'),
+	    tr: createDOMFactory('tr'),
+	    track: createDOMFactory('track'),
+	    u: createDOMFactory('u'),
+	    ul: createDOMFactory('ul'),
+	    var: createDOMFactory('var'),
+	    video: createDOMFactory('video'),
+	    wbr: createDOMFactory('wbr'),
+	
+	    // SVG
+	    circle: createDOMFactory('circle'),
+	    clipPath: createDOMFactory('clipPath'),
+	    defs: createDOMFactory('defs'),
+	    ellipse: createDOMFactory('ellipse'),
+	    g: createDOMFactory('g'),
+	    image: createDOMFactory('image'),
+	    line: createDOMFactory('line'),
+	    linearGradient: createDOMFactory('linearGradient'),
+	    mask: createDOMFactory('mask'),
+	    path: createDOMFactory('path'),
+	    pattern: createDOMFactory('pattern'),
+	    polygon: createDOMFactory('polygon'),
+	    polyline: createDOMFactory('polyline'),
+	    radialGradient: createDOMFactory('radialGradient'),
+	    rect: createDOMFactory('rect'),
+	    stop: createDOMFactory('stop'),
+	    svg: createDOMFactory('svg'),
+	    text: createDOMFactory('text'),
+	    tspan: createDOMFactory('tspan'),
+	  };
+	
+	  // due to wrapper and conditionals at the top, this will either become
+	  // `module.exports ReactDOMFactories` if that is available,
+	  // otherwise it will be defined via `define(['react'], ReactDOMFactories)`
+	  // if that is available,
+	  // otherwise it will be defined as global variable.
+	  return ReactDOMFactories;
+	});
+	
+
+
+/***/ },
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -31082,17 +31290,17 @@
 	  // By explicitly using `prop-types` you are opting into new development behavior.
 	  // http://fb.me/prop-types-in-prod
 	  var throwOnDirectAccess = true;
-	  module.exports = __webpack_require__(187)(isValidElement, throwOnDirectAccess);
+	  module.exports = __webpack_require__(188)(isValidElement, throwOnDirectAccess);
 	} else {
 	  // By explicitly using `prop-types` you are opting into new production behavior.
 	  // http://fb.me/prop-types-in-prod
-	  module.exports = __webpack_require__(190)();
+	  module.exports = __webpack_require__(191)();
 	}
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ },
-/* 187 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -31110,8 +31318,8 @@
 	var invariant = __webpack_require__(13);
 	var warning = __webpack_require__(16);
 	
-	var ReactPropTypesSecret = __webpack_require__(188);
-	var checkPropTypes = __webpack_require__(189);
+	var ReactPropTypesSecret = __webpack_require__(189);
+	var checkPropTypes = __webpack_require__(190);
 	
 	module.exports = function(isValidElement, throwOnDirectAccess) {
 	  /* global Symbol */
@@ -31611,7 +31819,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ },
-/* 188 */
+/* 189 */
 /***/ function(module, exports) {
 
 	/**
@@ -31631,7 +31839,7 @@
 
 
 /***/ },
-/* 189 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -31648,7 +31856,7 @@
 	if (process.env.NODE_ENV !== 'production') {
 	  var invariant = __webpack_require__(13);
 	  var warning = __webpack_require__(16);
-	  var ReactPropTypesSecret = __webpack_require__(188);
+	  var ReactPropTypesSecret = __webpack_require__(189);
 	  var loggedTypeFailures = {};
 	}
 	
@@ -31699,7 +31907,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ },
-/* 190 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -31715,7 +31923,7 @@
 	
 	var emptyFunction = __webpack_require__(17);
 	var invariant = __webpack_require__(13);
-	var ReactPropTypesSecret = __webpack_require__(188);
+	var ReactPropTypesSecret = __webpack_require__(189);
 	
 	module.exports = function() {
 	  function shim(props, propName, componentName, location, propFullName, secret) {
@@ -31764,7 +31972,7 @@
 
 
 /***/ },
-/* 191 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -31773,7 +31981,7 @@
 	 * Expose `debug()` as the module.
 	 */
 	
-	exports = module.exports = __webpack_require__(192);
+	exports = module.exports = __webpack_require__(193);
 	exports.log = log;
 	exports.formatArgs = formatArgs;
 	exports.save = save;
@@ -31809,20 +32017,20 @@
 	  // NB: In an Electron preload script, document will be defined but not fully
 	  // initialized. Since we know we're in Chrome, we'll just detect this case
 	  // explicitly
-	  if (typeof window !== 'undefined' && window && typeof window.process !== 'undefined' && window.process.type === 'renderer') {
+	  if (typeof window !== 'undefined' && window.process && window.process.type === 'renderer') {
 	    return true;
 	  }
 	
 	  // is webkit? http://stackoverflow.com/a/16459606/376773
 	  // document is undefined in react-native: https://github.com/facebook/react-native/pull/1632
-	  return (typeof document !== 'undefined' && document && 'WebkitAppearance' in document.documentElement.style) ||
+	  return (typeof document !== 'undefined' && document.documentElement && document.documentElement.style && document.documentElement.style.WebkitAppearance) ||
 	    // is firebug? http://stackoverflow.com/a/398120/376773
-	    (typeof window !== 'undefined' && window && window.console && (console.firebug || (console.exception && console.table))) ||
+	    (typeof window !== 'undefined' && window.console && (window.console.firebug || (window.console.exception && window.console.table))) ||
 	    // is firefox >= v31?
 	    // https://developer.mozilla.org/en-US/docs/Tools/Web_Console#Styling_messages
-	    (typeof navigator !== 'undefined' && navigator && navigator.userAgent && navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31) ||
+	    (typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31) ||
 	    // double check webkit in userAgent just in case we are in a worker
-	    (typeof navigator !== 'undefined' && navigator && navigator.userAgent && navigator.userAgent.toLowerCase().match(/applewebkit\/(\d+)/));
+	    (typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/applewebkit\/(\d+)/));
 	}
 	
 	/**
@@ -31917,14 +32125,17 @@
 	 */
 	
 	function load() {
+	  var r;
 	  try {
-	    return exports.storage.debug;
+	    r = exports.storage.debug;
 	  } catch(e) {}
 	
 	  // If debug isn't set in LS, and we're in Electron, try to load $DEBUG
-	  if (typeof process !== 'undefined' && 'env' in process) {
-	    return process.env.DEBUG;
+	  if (!r && typeof process !== 'undefined' && 'env' in process) {
+	    r = process.env.DEBUG;
 	  }
+	
+	  return r;
 	}
 	
 	/**
@@ -31953,7 +32164,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ },
-/* 192 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -31969,7 +32180,7 @@
 	exports.disable = disable;
 	exports.enable = enable;
 	exports.enabled = enabled;
-	exports.humanize = __webpack_require__(193);
+	exports.humanize = __webpack_require__(194);
 	
 	/**
 	 * The currently active debug mode names, and names to skip.
@@ -32099,7 +32310,7 @@
 	  exports.names = [];
 	  exports.skips = [];
 	
-	  var split = (namespaces || '').split(/[\s,]+/);
+	  var split = (typeof namespaces === 'string' ? namespaces : '').split(/[\s,]+/);
 	  var len = split.length;
 	
 	  for (var i = 0; i < len; i++) {
@@ -32161,18 +32372,18 @@
 
 
 /***/ },
-/* 193 */
+/* 194 */
 /***/ function(module, exports) {
 
 	/**
 	 * Helpers.
 	 */
 	
-	var s = 1000
-	var m = s * 60
-	var h = m * 60
-	var d = h * 24
-	var y = d * 365.25
+	var s = 1000;
+	var m = s * 60;
+	var h = m * 60;
+	var d = h * 24;
+	var y = d * 365.25;
 	
 	/**
 	 * Parse or format the given `val`.
@@ -32182,24 +32393,25 @@
 	 *  - `long` verbose formatting [false]
 	 *
 	 * @param {String|Number} val
-	 * @param {Object} options
+	 * @param {Object} [options]
 	 * @throws {Error} throw an error if val is not a non-empty string or a number
 	 * @return {String|Number}
 	 * @api public
 	 */
 	
-	module.exports = function (val, options) {
-	  options = options || {}
-	  var type = typeof val
+	module.exports = function(val, options) {
+	  options = options || {};
+	  var type = typeof val;
 	  if (type === 'string' && val.length > 0) {
-	    return parse(val)
+	    return parse(val);
 	  } else if (type === 'number' && isNaN(val) === false) {
-	    return options.long ?
-				fmtLong(val) :
-				fmtShort(val)
+	    return options.long ? fmtLong(val) : fmtShort(val);
 	  }
-	  throw new Error('val is not a non-empty string or a valid number. val=' + JSON.stringify(val))
-	}
+	  throw new Error(
+	    'val is not a non-empty string or a valid number. val=' +
+	      JSON.stringify(val)
+	  );
+	};
 	
 	/**
 	 * Parse the given `str` and return milliseconds.
@@ -32210,53 +32422,55 @@
 	 */
 	
 	function parse(str) {
-	  str = String(str)
-	  if (str.length > 10000) {
-	    return
+	  str = String(str);
+	  if (str.length > 100) {
+	    return;
 	  }
-	  var match = /^((?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|years?|yrs?|y)?$/i.exec(str)
+	  var match = /^((?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|years?|yrs?|y)?$/i.exec(
+	    str
+	  );
 	  if (!match) {
-	    return
+	    return;
 	  }
-	  var n = parseFloat(match[1])
-	  var type = (match[2] || 'ms').toLowerCase()
+	  var n = parseFloat(match[1]);
+	  var type = (match[2] || 'ms').toLowerCase();
 	  switch (type) {
 	    case 'years':
 	    case 'year':
 	    case 'yrs':
 	    case 'yr':
 	    case 'y':
-	      return n * y
+	      return n * y;
 	    case 'days':
 	    case 'day':
 	    case 'd':
-	      return n * d
+	      return n * d;
 	    case 'hours':
 	    case 'hour':
 	    case 'hrs':
 	    case 'hr':
 	    case 'h':
-	      return n * h
+	      return n * h;
 	    case 'minutes':
 	    case 'minute':
 	    case 'mins':
 	    case 'min':
 	    case 'm':
-	      return n * m
+	      return n * m;
 	    case 'seconds':
 	    case 'second':
 	    case 'secs':
 	    case 'sec':
 	    case 's':
-	      return n * s
+	      return n * s;
 	    case 'milliseconds':
 	    case 'millisecond':
 	    case 'msecs':
 	    case 'msec':
 	    case 'ms':
-	      return n
+	      return n;
 	    default:
-	      return undefined
+	      return undefined;
 	  }
 	}
 	
@@ -32270,18 +32484,18 @@
 	
 	function fmtShort(ms) {
 	  if (ms >= d) {
-	    return Math.round(ms / d) + 'd'
+	    return Math.round(ms / d) + 'd';
 	  }
 	  if (ms >= h) {
-	    return Math.round(ms / h) + 'h'
+	    return Math.round(ms / h) + 'h';
 	  }
 	  if (ms >= m) {
-	    return Math.round(ms / m) + 'm'
+	    return Math.round(ms / m) + 'm';
 	  }
 	  if (ms >= s) {
-	    return Math.round(ms / s) + 's'
+	    return Math.round(ms / s) + 's';
 	  }
-	  return ms + 'ms'
+	  return ms + 'ms';
 	}
 	
 	/**
@@ -32297,7 +32511,7 @@
 	    plural(ms, h, 'hour') ||
 	    plural(ms, m, 'minute') ||
 	    plural(ms, s, 'second') ||
-	    ms + ' ms'
+	    ms + ' ms';
 	}
 	
 	/**
@@ -32306,17 +32520,17 @@
 	
 	function plural(ms, n, name) {
 	  if (ms < n) {
-	    return
+	    return;
 	  }
 	  if (ms < n * 1.5) {
-	    return Math.floor(ms / n) + ' ' + name
+	    return Math.floor(ms / n) + ' ' + name;
 	  }
-	  return Math.ceil(ms / n) + ' ' + name + 's'
+	  return Math.ceil(ms / n) + ' ' + name + 's';
 	}
 
 
 /***/ },
-/* 194 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -32327,7 +32541,7 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var debounce = __webpack_require__(195);
+	var debounce = __webpack_require__(196);
 	
 	/** Used as the `TypeError` message for "Functions" methods. */
 	var FUNC_ERROR_TEXT = 'Expected a function';
@@ -32418,7 +32632,7 @@
 
 
 /***/ },
-/* 195 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -32429,7 +32643,7 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var getNative = __webpack_require__(196);
+	var getNative = __webpack_require__(197);
 	
 	/** Used as the `TypeError` message for "Functions" methods. */
 	var FUNC_ERROR_TEXT = 'Expected a function';
@@ -32658,7 +32872,7 @@
 
 
 /***/ },
-/* 196 */
+/* 197 */
 /***/ function(module, exports) {
 
 	/**
@@ -32801,7 +33015,7 @@
 
 
 /***/ },
-/* 197 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32811,15 +33025,15 @@
 	});
 	exports.supportedValue = exports.supportedProperty = exports.prefix = undefined;
 	
-	var _prefix = __webpack_require__(198);
+	var _prefix = __webpack_require__(199);
 	
 	var _prefix2 = _interopRequireDefault(_prefix);
 	
-	var _supportedProperty = __webpack_require__(200);
+	var _supportedProperty = __webpack_require__(201);
 	
 	var _supportedProperty2 = _interopRequireDefault(_supportedProperty);
 	
-	var _supportedValue = __webpack_require__(202);
+	var _supportedValue = __webpack_require__(203);
 	
 	var _supportedValue2 = _interopRequireDefault(_supportedValue);
 	
@@ -32842,7 +33056,7 @@
 	exports.supportedValue = _supportedValue2['default'];
 
 /***/ },
-/* 198 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32851,7 +33065,7 @@
 	  value: true
 	});
 	
-	var _isInBrowser = __webpack_require__(199);
+	var _isInBrowser = __webpack_require__(200);
 	
 	var _isInBrowser2 = _interopRequireDefault(_isInBrowser);
 	
@@ -32896,7 +33110,7 @@
 	exports['default'] = { js: js, css: css };
 
 /***/ },
-/* 199 */
+/* 200 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -32912,7 +33126,7 @@
 	exports.default = isBrowser;
 
 /***/ },
-/* 200 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32922,15 +33136,15 @@
 	});
 	exports['default'] = supportedProperty;
 	
-	var _isInBrowser = __webpack_require__(199);
+	var _isInBrowser = __webpack_require__(200);
 	
 	var _isInBrowser2 = _interopRequireDefault(_isInBrowser);
 	
-	var _prefix = __webpack_require__(198);
+	var _prefix = __webpack_require__(199);
 	
 	var _prefix2 = _interopRequireDefault(_prefix);
 	
-	var _camelize = __webpack_require__(201);
+	var _camelize = __webpack_require__(202);
 	
 	var _camelize2 = _interopRequireDefault(_camelize);
 	
@@ -32989,7 +33203,7 @@
 	}
 
 /***/ },
-/* 201 */
+/* 202 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -33015,7 +33229,7 @@
 	}
 
 /***/ },
-/* 202 */
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33025,11 +33239,11 @@
 	});
 	exports['default'] = supportedValue;
 	
-	var _isInBrowser = __webpack_require__(199);
+	var _isInBrowser = __webpack_require__(200);
 	
 	var _isInBrowser2 = _interopRequireDefault(_isInBrowser);
 	
-	var _prefix = __webpack_require__(198);
+	var _prefix = __webpack_require__(199);
 	
 	var _prefix2 = _interopRequireDefault(_prefix);
 	
@@ -33094,7 +33308,7 @@
 	}
 
 /***/ },
-/* 203 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33104,9 +33318,9 @@
 	});
 	exports.removeEventListener = exports.addEventListener = exports.off = exports.on = undefined;
 	
-	var _platform = __webpack_require__(204);
+	var _platform = __webpack_require__(205);
 	
-	var _utils = __webpack_require__(205);
+	var _utils = __webpack_require__(206);
 	
 	/* eslint no-param-reassign: 0 */
 	
@@ -33218,7 +33432,7 @@
 	exports.removeEventListener = off;
 
 /***/ },
-/* 204 */
+/* 205 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -33244,7 +33458,7 @@
 	exports.document = DOCUMENT;
 
 /***/ },
-/* 205 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33254,7 +33468,7 @@
 	});
 	exports.clientOnly = exports.noop = exports.equalRecords = exports.find = exports.arrayify = undefined;
 	
-	var _platform = __webpack_require__(204);
+	var _platform = __webpack_require__(205);
 	
 	var arrayify = function arrayify(x) {
 	  return Array.isArray(x) ? x : [x];
@@ -33294,7 +33508,7 @@
 	exports.clientOnly = clientOnly;
 
 /***/ },
-/* 206 */
+/* 207 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33304,9 +33518,9 @@
 	});
 	exports.equalCoords = exports.doesFitWithin = exports.centerOfBoundsFromBounds = exports.centerOfBounds = exports.centerOfSize = exports.axes = exports.pickZone = exports.place = exports.calcRelPos = exports.validTypeValues = exports.types = exports.El = undefined;
 	
-	var _platform = __webpack_require__(204);
+	var _platform = __webpack_require__(205);
 	
-	var _utils = __webpack_require__(205);
+	var _utils = __webpack_require__(206);
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
@@ -33540,7 +33754,7 @@
 	exports.equalCoords = _utils.equalRecords;
 
 /***/ },
-/* 207 */
+/* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33549,15 +33763,17 @@
 	  value: true
 	});
 	
-	var _react = __webpack_require__(6);
+	var _reactDomFactories = __webpack_require__(186);
+	
+	var _reactDomFactories2 = _interopRequireDefault(_reactDomFactories);
 	
 	var _reactDom = __webpack_require__(37);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _utils = __webpack_require__(205);
+	var _utils = __webpack_require__(206);
 	
-	var _platform = __webpack_require__(204);
+	var _platform = __webpack_require__(205);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -33565,24 +33781,29 @@
 	  return _platform.isClient ? document.createElement(x) : _utils.noop;
 	};
 	
-	var bodyAppendElement = function bodyAppendElement(x) {
-	  return _platform.isClient ? document.body.appendChild(x) : _utils.noop;
+	var appendElement = function appendElement(x, target) {
+	  return _platform.isClient ? target.appendChild(x) : _utils.noop;
 	};
 	
-	var bodyRemoveElement = function bodyRemoveElement(x) {
-	  return _platform.isClient ? document.body.removeChild(x) : _utils.noop;
+	var removeElement = function removeElement(x, target) {
+	  return _platform.isClient ? target.removeChild(x) : _utils.noop;
 	};
 	
 	var ReactLayerMixin = function ReactLayerMixin() {
 	  return {
 	    componentWillMount: function componentWillMount() {
 	      this.targetBounds = null;
+	      this.appendTarget = document.body;
 	      /* Create a DOM node for mounting the React Layer. */
 	      this.layerContainerNode = createElement("div");
 	    },
 	    componentDidMount: function componentDidMount() {
+	      if (this.props.appendTarget && document.querySelector(this.props.appendTarget)) {
+	        this.appendTarget = document.querySelector(this.props.appendTarget);
+	      }
+	
 	      /* Mount the mount. */
-	      bodyAppendElement(this.layerContainerNode);
+	      appendElement(this.layerContainerNode, this.appendTarget);
 	      this._layerRender();
 	    },
 	    componentDidUpdate: function componentDidUpdate() {
@@ -33591,13 +33812,13 @@
 	    componentWillUnmount: function componentWillUnmount() {
 	      this._layerUnrender();
 	      /* Unmount the mount. */
-	      bodyRemoveElement(this.layerContainerNode);
+	      removeElement(this.layerContainerNode, this.appendTarget);
 	    },
 	    _layerRender: function _layerRender() {
 	      var layerReactEl = this.renderLayer();
 	      if (!layerReactEl) {
 	        this.layerReactComponent = null;
-	        _reactDom2.default.unstable_renderSubtreeIntoContainer(this, _react.DOM.noscript(), this.layerContainerNode);
+	        _reactDom2.default.unstable_renderSubtreeIntoContainer(this, _reactDomFactories2.default.noscript(), this.layerContainerNode);
 	      } else {
 	        this.layerReactComponent = _reactDom2.default.unstable_renderSubtreeIntoContainer(this, layerReactEl, this.layerContainerNode);
 	      }
@@ -33612,7 +33833,7 @@
 	exports.default = ReactLayerMixin;
 
 /***/ },
-/* 208 */
+/* 209 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33622,7 +33843,9 @@
 	});
 	exports.default = undefined;
 	
-	var _react = __webpack_require__(6);
+	var _reactDomFactories = __webpack_require__(186);
+	
+	var _reactDomFactories2 = _interopRequireDefault(_reactDomFactories);
 	
 	var _createReactClass = __webpack_require__(183);
 	
@@ -33645,7 +33868,7 @@
 	      width: isPortrait ? crossLength : mainLength,
 	      height: isPortrait ? mainLength : crossLength
 	    };
-	    var triangle = _react.DOM.svg(props, _react.DOM.polygon({
+	    var triangle = _reactDomFactories2.default.svg(props, _reactDomFactories2.default.polygon({
 	      className: "Popover-tipShape",
 	      points: points
 	    }));
@@ -33656,7 +33879,6 @@
 	exports.default = Tip;
 
 /***/ },
-/* 209 */,
 /* 210 */,
 /* 211 */,
 /* 212 */,
@@ -33665,13 +33887,14 @@
 /* 215 */,
 /* 216 */,
 /* 217 */,
-/* 218 */
+/* 218 */,
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(219);
+	var content = __webpack_require__(220);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(4)(content, {});
@@ -33691,7 +33914,7 @@
 	}
 
 /***/ },
-/* 219 */
+/* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(3)();
